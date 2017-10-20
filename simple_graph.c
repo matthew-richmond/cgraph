@@ -55,7 +55,7 @@ GraphNode * grh_find_node_by_name(ObjectList * graph, char * name){
 	GraphNode *node = NULL; 
 	while(ol_has_next(gr)){
 		node = ol_next(gr);
-		if(node->name == name){
+		if(strcmp(node->name, name)==0){
 			free(gr);
 			return node;
 		}
@@ -67,17 +67,18 @@ GraphNode * grh_find_node_by_name(ObjectList * graph, char * name){
 void grh_print_graph(ObjectList * graph){
 	Iter * gr = ol_iterator(graph);
 	GraphNode * node = NULL;
-	GraphNode * ne = NULL;
+	GraphNode *nb = NULL;
 	while(ol_has_next(gr)){
 		node = ol_next(gr);
-		Iter * nb = ol_iterator(node->neighbors);
 		printf("%s:" , node->name);
-		while(ol_has_next(nb)){
-			ne = ol_next(nb);
-			printf(" %s,", ne->name);
+		Iter *nbr = ol_iterator(node->neighbors);
+		while(ol_has_next(nbr)){
+			nb = ol_next(nbr);
+			if(ol_has_next(nbr)){printf(" %s,", nb->name);}
+			else{printf(" %s", nb->name);}
 		}
-		free(nb);
 		printf("\n");
+		free(nbr);
 	}
 	free(gr);
 }
@@ -88,31 +89,36 @@ void grh_load_file(ObjectList * graph, FILE * input){
 	char buff[MAX_FILE_LINE_LENGTH];
 	char *toke;
 	char *swap = ",";
-	while((!feof(input)) && fgets(buff,size, input)!='\n'){
-		toke = strtok(buff,swap);
-		GraphNode * node = NULL;
-		if(grh_find_node_by_name(graph, toke) == NULL){
-			node = grh_create_node(toke);
-			ol_insert(graph,node);
-		}
-		else{
-			node = grh_find_node_by_name(graph,toke);
-		}
-		while((toke=strtok(NULL,swap)) != NULL){
-			GraphNode * nbr = NULL;
+	GraphNode *node = NULL;
+	GraphNode *nbr = NULL;
+	while(fgets(buff,size,input)!='\0'){
+		if(!(strcmp(buff,"\n")==0)){
+			toke = strtok(buff, "\n");
+			toke = strtok(buff, swap);
 			if(grh_find_node_by_name(graph,toke) == NULL){
-				nbr = grh_create_node(toke);
-				ol_insert(graph,nbr);
+				node = grh_create_node(toke);
+				ol_insert(graph, node);
 			}
-			else if(grh_find_node_by_name(graph,toke) != NULL){
-				nbr = grh_find_node_by_name(graph,toke);
+			else{
+				node = grh_find_node_by_name(graph, toke);
 			}
-			if(grh_find_node_by_name(node->neighbors,nbr->name) == NULL){
-				ol_insert(node->neighbors, nbr);
-			}
-			if(grh_find_node_by_name(nbr->neighbors,node->name) == NULL){
-				ol_insert(nbr->neighbors, node);
+			toke = strtok(NULL, swap);
+			while(toke != NULL){
+				if(grh_find_node_by_name(graph,toke) == NULL){
+					nbr = grh_create_node(toke);
+					ol_insert(graph, nbr);
+				}
+				else{
+					nbr = grh_find_node_by_name(graph,toke);
+				}
+				if(grh_find_node_by_name(node->neighbors, toke) == NULL){
+					ol_insert(node->neighbors, nbr);
+				}
+				if(grh_find_node_by_name(nbr->neighbors, toke) == NULL){
+					ol_insert(nbr->neighbors, node);
+				}
+				toke = strtok(NULL, swap);
 			}
 		}
 	}
-}
+}	
