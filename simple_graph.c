@@ -8,6 +8,13 @@
 #include "simple_graph.h"
 #include <string.h>
 
+
+
+/*
+* Function to create a GraphNode object, and allocate it's memory dynamically
+* @param name the name of the node object to be created
+* @return a pointer to the new node instance
+*/
 GraphNode * grh_create_node( char * name ){
 	GraphNode * node = NULL;
 	node = malloc(sizeof(GraphNode));
@@ -16,6 +23,12 @@ GraphNode * grh_create_node( char * name ){
 	return node;
 }
 
+
+/*
+* Function to delete a node from memory and from the graph
+* @param node a pointer to the existing node
+* @pre-conditon the node exits and is not NULL
+*/
 void grh_delete_node(GraphNode * node){
 	Iter *nb = ol_iterator(node->neighbors);
 	GraphNode *nbr = NULL;
@@ -39,6 +52,12 @@ void grh_delete_node(GraphNode * node){
 	free(node);
 }
 
+
+/*
+* Deletes an entire graph from memory
+* @param graph is an ObjectList of the graph
+* @pre-condition list must be NULL terminated
+*/
 void grh_delete_graph(ObjectList * graph){
 	Iter * gr = ol_iterator(graph);
 	GraphNode *node = NULL;
@@ -50,6 +69,12 @@ void grh_delete_graph(ObjectList * graph){
 	free(gr);
 }
 
+/*
+* Finds a node in the graph by name
+* @param graph is an ObjectList of the graph nodes
+* @param name name of the node
+* @return Node pointer to the GraphNode that has been found, NULL otherwise
+*/
 GraphNode * grh_find_node_by_name(ObjectList * graph, char * name){
 	Iter * gr = ol_iterator(graph);
 	GraphNode *node = NULL; 
@@ -64,6 +89,11 @@ GraphNode * grh_find_node_by_name(ObjectList * graph, char * name){
 	return NULL;
 }
 
+/*
+* Function to print the graph to stdout
+* @param graph ObjectList contaitning the graph
+* @pre-condition ObjectList is NULL terminated
+*/
 void grh_print_graph(ObjectList * graph){
 	Iter * gr = ol_iterator(graph);
 	GraphNode * node = NULL;
@@ -82,8 +112,13 @@ void grh_print_graph(ObjectList * graph){
 	}
 	free(gr);
 }
-		
 
+
+/*
+* Function loads graph data from a file, and populates a graph accordingly
+* @param graph ObjectList that is initialized at NULL
+* @param input file to read input from
+*/
 void grh_load_file(ObjectList * graph, FILE * input){	
 	int size = MAX_FILE_LINE_LENGTH;
 	char buff[MAX_FILE_LINE_LENGTH];
