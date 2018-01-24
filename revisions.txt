@@ -1,0 +1,23 @@
+commit 12ef84ae5c469747b4f2bb0f009b1fdbe15d38a4
+Author: Matthew J Richmond <mjr1408@cs.rit.edu>
+Date:   Sat Oct 21 22:54:57 2017 -0400
+
+    Finished comments, final commit
+
+commit 3567cf25e84f10e78adeb4d0b9ac9ff8681007b2
+Author: Matthew J Richmond <mjr1408@cs.rit.edu>
+Date:   Fri Oct 20 02:17:13 2017 -0400
+
+    Full functionality
+
+commit c778b3c7c759652e4355e4c043aa0d25ded0f4f0
+Author: Matthew J Richmond <mjr1408@cs.rit.edu>
+Date:   Thu Oct 19 23:51:32 2017 -0400
+
+    Output attained
+
+commit f5670dfbd2bc2fa06c3fce3439fe187e679fb1ad
+Author: Matthew J Richmond <mjr1408@cs.rit.edu>
+Date:   Thu Oct 19 19:02:02 2017 -0400
+
+    Init commit
